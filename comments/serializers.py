@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from .models import Comment
-
+# from account.serializers import UserGetSerializer
 
 class CommentSerializer(serializers.ModelSerializer):
-
+ 
+ # to_user = UserGetSerializer()
  class Meta:
   model = Comment
-  fields = ['content', 'to_user', 'level_of_satsfaction', 'created_at', 'updated_at']
+  fields = '__all__'

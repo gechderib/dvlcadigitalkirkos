@@ -5,6 +5,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.response import Response
+from django.utils import timezone
 
 from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
 
@@ -23,6 +26,15 @@ class CommentCreateAPIView(generics.CreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [AllowAny]
     
+    def create(self, request, *args, **kwargs):
+        ticket = request.data.get('ticket',)
+        now = timezone.now()
+        # Check if the ticket already exists
+        if Comment.objects.filter(ticket=ticket, created_at__gte=now - timezone.timedelta(hours=24)).exists():
+            return Response({"detail": "Ticket already commented."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If the ticket does not exist, proceed with the creation
+        return super().create(request, *args, **kwargs)
 
 
 
