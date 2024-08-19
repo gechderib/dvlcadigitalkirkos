@@ -108,9 +108,10 @@ DATABASES = {
     # }
     
     'default': dj_database_url.config(
-        default=f'postgresql://{getenv('PGUSER')}:{getenv('PGPASSWORD')}@{getenv('PGHOST')}/{getenv('PGDATABASE')}?sslmode=require',
+        default=f'postgresql://{getenv("PGUSER")}:{getenv("PGPASSWORD")}@{getenv("PGHOST")}/{getenv("PGDATABASE")}?sslmode=require',
         conn_max_age=600
     )
+
     
     
 
