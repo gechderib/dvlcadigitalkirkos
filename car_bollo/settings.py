@@ -88,12 +88,11 @@ WSGI_APPLICATION = 'car_bollo.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-    
-
     
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
@@ -161,6 +160,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 
+
 STATIC_URL = '/static/'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
@@ -171,5 +171,7 @@ if not DEBUG:
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

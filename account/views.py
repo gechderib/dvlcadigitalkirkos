@@ -18,9 +18,13 @@ from rest_framework import generics
 class UserCreateViewSet(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserCreateSerializer
-    permission_classes = [IsSuperUser]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated, IsSuperUser]
     
     def create(self, request, *args, **kwargs):
+        print("--------------------------------")
+        print(request.data)
+        print("--------------------------------")
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             
@@ -28,7 +32,8 @@ class UserCreateViewSet(generics.CreateAPIView):
             user = CustomUser(
                 first_name=serializer.validated_data['first_name'],
                 last_name=serializer.validated_data['last_name'],
-                phone_number=serializer.validated_data['phone_number']
+                phone_number=serializer.validated_data['phone_number'],
+                profile_pic=serializer.validated_data['profile_pic']
             )
             user.set_password(serializer.validated_data['password'])  # Hash the password
             user.save()  # Save the user instance to the database
@@ -50,21 +55,24 @@ class UserDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
 
     
     
-
+@method_decorator(csrf_exempt, name="dispatch")
 class UserLoginApiView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserLoginSerializer
     permission_classes = [AllowAny]
-
-    @method_decorator(csrf_exempt, name="dispatch")
+    
     def post(self, request, *args, **kwargs):
+        print("User login ********************************")
         serializer = self.get_serializer(data=request.data)
+        # serializer = UserLoginSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             phone_number = serializer.validated_data['phone_number']
             password = serializer.validated_data['password']
-
+            print(phone_number, password)
             # Use Django's authenticate method
             user = authenticate(request, phone_number=phone_number, password=password)
+            print(user)
 
             if user is not None:
                 login(request, user)
@@ -77,8 +85,40 @@ class UserLoginApiView(generics.CreateAPIView):
             else:
                 return Response({'detail': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
         else:
+            print("--------------------------------")
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def userLogin(request):
+    print("User login ********************************")
+        # serializer = self.get_serializer(data=request.data)
+    serializer = UserLoginSerializer(data=request.data)
+    print(serializer)
+    if serializer.is_valid():
+        phone_number = serializer.validated_data['phone_number']
+        password = serializer.validated_data['password']
+        print(phone_number, password)
+        # Use Django's authenticate method
+        user = authenticate(request, phone_number=phone_number, password=password)
+        print(user)
+
+        if user is not None:
+            login(request, user)
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'detail': 'User successfully logged in',
+                'token': token.key,
+                'created': created
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        print("--------------------------------")
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

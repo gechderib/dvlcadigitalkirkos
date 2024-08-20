@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import News, OfficeDirection, UserObligation
+from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -21,3 +21,8 @@ class UserObliqueDirectionSerializer(serializers.ModelSerializer):
       fields = '__all__'
 
 
+
+class TicketAnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TicketAnnouncement
+        fields = '__all__'

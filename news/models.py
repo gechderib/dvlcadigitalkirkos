@@ -36,3 +36,13 @@ class UserObligation(models.Model):
    content = models.TextField(null=False, blank=False, unique=True)
    def __str__(self):
       return f"{self.content}"
+
+
+class TicketAnnouncement(models.Model):
+   ticket_number = models.CharField(max_length=10, blank=False, null=False)
+
+   def __str__(self):
+      return f"Ticket range: {self.ticket_number}"
+
+
+

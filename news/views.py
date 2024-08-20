@@ -1,12 +1,19 @@
-from .models import News, OfficeDirection, UserObligation
-from .serializers import NewsSerializer, OfficeDirectionSerializer, UserObliqueDirectionSerializer
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
+from .serializers import NewsSerializer, OfficeDirectionSerializer, UserObliqueDirectionSerializer, TicketAnouncementSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
+
+
+from django.http import StreamingHttpResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views import View
+import time
 
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsListAPIView(ListAPIView):
@@ -83,6 +90,41 @@ class UserObliqueDirectionListAPIView(ListAPIView):
     queryset = UserObligation.objects.all()
     serializer_class = UserObliqueDirectionSerializer
     permission_classes = [AllowAny]
+
+
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class TicketAnnouncementStreamView(View):
+    def get(self, request, *args, **kwargs):
+        def event_stream():
+            while True:
+                ticket = TicketAnnouncement.objects.first()
+                if ticket:
+                    yield f"data: {ticket.ticket_number}\n\n"
+                time.sleep(10)  # Send updates every hour
+
+        response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
+        return response
+
+
+
+class TicketCreateAPIView(CreateAPIView):
+    queryset = TicketAnnouncement.objects.all()
+    serializer_class = TicketAnouncementSerializer
+
+
+class TicketListAPIView(ListAPIView):
+    queryset = TicketAnnouncement.objects.all()
+    serializer_class = TicketAnouncementSerializer
+
+
+class TicketRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = TicketAnnouncement.objects.all()
+    serializer_class = TicketAnouncementSerializer
+    lookup_field = 'pk'
+
+
 
 
 
