@@ -8,7 +8,7 @@ class CommentAdmin(admin.ModelAdmin):
   'id',
   'content',
   'to_user',
-  'level_of_satsfaction',
+  'level_of_satisfaction',
   'created_at',
   'updated_at'
   )

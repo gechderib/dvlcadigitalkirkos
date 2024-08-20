@@ -1,18 +1,39 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from account.models import CustomUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+COMMENT_LEVEL_CHOICES = (
+    ('general', 'General'),
+    ('touser', 'To User'),
+)
+
 class Comment(models.Model):
+    content = models.TextField()
+    to_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="comments", null=True, blank=True)
+    level_of_satisfaction = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    level_of_comment = models.CharField(max_length=20, choices=COMMENT_LEVEL_CHOICES, default='general')
+    ticket = models.CharField(max_length=10, blank=True, null=True)
+    ticket_img = models.ImageField(upload_to="images/", null=True, blank=True)
+    window_number = models.CharField(max_length=10, blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
- content = models.TextField()
- to_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="comments")
- level_of_satsfaction = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
- ticket = models.CharField(max_length=10, blank=False, null=False)
- ticket_img = models.ImageField(upload_to="images/", null=True, blank=True)
- window_number = models.CharField(max_length=10, blank=False, null=False)
- created_at = models.DateTimeField(auto_now_add=True)
- updated_at = models.DateTimeField(auto_now=True)
- 
+    def clean(self):
+        if self.level_of_comment == 'touser':
+            if not self.to_user:
+                raise ValidationError({'to_user': 'This field is required when level_of_comment is "To User".'})
+            if not self.ticket:
+                raise ValidationError({'ticket': 'This field is required when level_of_comment is "To User".'})
+        else:
+            self.to_user = None
+            self.ticket = None
 
- def __str__(self):
-  return f"Comment by {self.to_user} on {self.created_at}"
+    def save(self, *args, **kwargs):
+        # Call the clean method before saving
+        self.clean()
+        super(Comment, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Comment by {self.to_user} on {self.created_at}"
+
