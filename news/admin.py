@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, OfficeDirection, UserObligation
+from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
 # Register your models here.
 
 class NewsAdmin(admin.ModelAdmin):
@@ -29,6 +29,12 @@ class UserObligationdmin(admin.ModelAdmin):
  )
   
 
+class Ticketdmin(admin.ModelAdmin):
+  list_display = (
+  'id',
+  'ticket_number',
+ )
 admin.site.register(News, NewsAdmin)
 admin.site.register(OfficeDirection,OfficeDirectionAdmin)
 admin.site.register(UserObligation,UserObligationdmin)
+admin.site.register(TicketAnnouncement,Ticketdmin)
