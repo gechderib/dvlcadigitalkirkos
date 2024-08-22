@@ -180,7 +180,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://aadv.onrender.com",
-    "https://aadvl.netlify.app/"
+    "https://aadvl.netlify.app"
 ]
 
 # If you want to allow all origins (use with caution in production)
