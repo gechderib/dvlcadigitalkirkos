@@ -39,10 +39,12 @@ class UserObligation(models.Model):
 
 
 class TicketAnnouncement(models.Model):
-   ticket_number = models.CharField(max_length=10, blank=False, null=False)
-
-   def __str__(self):
-      return f"Ticket range: {self.ticket_number}"
+    current_ticket_number = models.CharField(max_length=10, blank=False, null=False)
+    last_ticket_number = models.CharField(max_length=10, blank=False, null=False)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+      return f"Ticket range: {self.current_ticket_number}- {self.last_ticket_number}"
 
 
 

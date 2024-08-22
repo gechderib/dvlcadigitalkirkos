@@ -121,6 +121,13 @@ def userLogin(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class StaffUserListView(generics.ListAPIView):
+    serializer_class = UserGetSerializer
+
+    def get_queryset(self):
+        return CustomUser.objects.filter(role='staff')
+
+
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

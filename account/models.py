@@ -28,6 +28,7 @@ class UserManager(BaseUserManager):
 
 ROLE_CHOICES = (
  ('admin', 'Admin'),
+ ('staff', 'Staff'),
  ('user', 'User'),
 )
 

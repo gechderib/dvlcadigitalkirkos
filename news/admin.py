@@ -32,9 +32,12 @@ class UserObligationdmin(admin.ModelAdmin):
 class Ticketdmin(admin.ModelAdmin):
   list_display = (
   'id',
-  'ticket_number',
+  'current_ticket_number',
+  'last_ticket_number',
+  'updated_at'
  )
 admin.site.register(News, NewsAdmin)
 admin.site.register(OfficeDirection,OfficeDirectionAdmin)
 admin.site.register(UserObligation,UserObligationdmin)
 admin.site.register(TicketAnnouncement,Ticketdmin)
+

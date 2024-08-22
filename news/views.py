@@ -99,10 +99,10 @@ class TicketAnnouncementStreamView(View):
     def get(self, request, *args, **kwargs):
         def event_stream():
             while True:
-                ticket = TicketAnnouncement.objects.first()
+                ticket = TicketAnnouncement.objects.last()
                 if ticket:
-                    yield f"data: {ticket.ticket_number}\n\n"
-                time.sleep(10)  # Send updates every hour
+                    yield f"data: {{\"current_ticket_number\": \"{ticket.current_ticket_number}\", \"last_ticket_number\": \"{ticket.last_ticket_number}\"}}\n\n"
+                time.sleep(3600)  # Update every hour
 
         response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
         return response
