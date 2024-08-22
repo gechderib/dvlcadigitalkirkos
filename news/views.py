@@ -102,7 +102,7 @@ class TicketAnnouncementStreamView(View):
                 ticket = TicketAnnouncement.objects.last()
                 if ticket:
                     yield f"data: {{\"current_ticket_number\": \"{ticket.current_ticket_number}\", \"last_ticket_number\": \"{ticket.last_ticket_number}\"}}\n\n"
-                time.sleep(3600)  # Update every hour
+                time.sleep(5)  # Update every hour
 
         response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
         return response

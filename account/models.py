@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
  last_name = models.CharField(verbose_name="Last Name", max_length=255)
  phone_number = models.CharField(verbose_name="Phone Number", max_length=15, unique=True, blank=False, null=False)
  password = models.CharField(verbose_name="Password", max_length=255, blank=False, null=False)
- role = models.CharField(verbose_name="Role", max_length=20, choices=ROLE_CHOICES, default='user')
+ role = models.CharField(verbose_name="Role", max_length=20, choices=ROLE_CHOICES, default='staff')
  profile_pic = models.ImageField(blank=True, null=True, upload_to='images/')
 
  def __str__(self):
