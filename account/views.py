@@ -13,34 +13,48 @@ from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.views import APIView
 
+from cloudinary.uploader import upload
+
+
 @method_decorator(csrf_exempt, name="dispatch")
 class UserCreateViewSet(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserCreateSerializer
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated, IsSuperUser]
-    
+
     def create(self, request, *args, **kwargs):
         print("--------------------------------")
         print(request.data)
         print("--------------------------------")
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            
-            # Manually create the user instance
+            print("99999999999999999999999999999")
+            images = request.FILES.getlist('profile_pic')
+            item_folder = "item_folder"
+
+            print(images)
+
+            if images:
+                result = upload(images[0], folder=item_folder)
+                image_url = result['secure_url']
+            else:
+                image_url = None 
+            print(image_url)
             user = CustomUser(
                 first_name=serializer.validated_data['first_name'],
                 last_name=serializer.validated_data['last_name'],
                 phone_number=serializer.validated_data['phone_number'],
-                profile_pic=serializer.validated_data['profile_pic']
+                profile_pic=image_url
             )
-            user.set_password(serializer.validated_data['password'])  # Hash the password
-            user.save()  # Save the user instance to the database
+            print(user)
+            user.set_password(serializer.validated_data['password'])
+            user.save()
 
             return Response({'detail': 'User created successfully'}, status=status.HTTP_201_CREATED)
         else:
+            print ('User creation failed')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 

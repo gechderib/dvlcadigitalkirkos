@@ -39,7 +39,9 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(verbose_name="Phone Number", max_length=15, unique=True, blank=False, null=False)
     password = models.CharField(verbose_name="Password", max_length=255, blank=False, null=False)
     role = models.CharField(verbose_name="Role", max_length=20, choices=ROLE_CHOICES, default='staff')
-    profile_pic = CloudinaryField('image', blank=True, null=True)
+    # profile_pic = CloudinaryField('image', blank=True, null=True)
+    profile_pic = models.JSONField(default=list)
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
