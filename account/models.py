@@ -30,6 +30,10 @@ ROLE_CHOICES = (
  ('admin', 'Admin'),
  ('staff', 'Staff'),
  ('user', 'User'),
+ ('user1', 'User1'),
+ ('user2', 'User2'),
+ ('user3', 'User3'),
+ ('user4', 'User4'),
 )
 
 

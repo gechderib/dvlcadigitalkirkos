@@ -7,12 +7,11 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
-
 from django.contrib.auth import login,authenticate
 from commons.permission import IsSelfOrReadOnly, IsAdmin, IsSuperUser
 from django.utils.decorators import method_decorator
 from rest_framework import generics
-
+from rest_framework.views import APIView
 
 @method_decorator(csrf_exempt, name="dispatch")
 class UserCreateViewSet(generics.CreateAPIView):
@@ -134,3 +133,20 @@ class StaffUserListView(generics.ListAPIView):
 def userLogout(request):
  request.auth.delete()
  return Response({'message':"Successfly logged out"}, status=status.HTTP_200_OK)
+
+
+
+class UserProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request):
+        user = request.user
+        user_data = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "phone_number": user.phone_number,
+            "role": user.role
+        }
+        return Response(user_data)
+
