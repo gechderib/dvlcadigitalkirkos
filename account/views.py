@@ -110,6 +110,10 @@ def userLogin(request):
             return Response({
                 'detail': 'User successfully logged in',
                 'token': token.key,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "phone_number": user.phone_number,
+                "role": user.role,
                 'created': created
             }, status=status.HTTP_200_OK)
         else:
