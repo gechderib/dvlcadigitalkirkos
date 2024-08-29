@@ -13,6 +13,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
 
+from .models import ServiceAvailability
+from .serializers import ServiceAvailabilitySerializer
+
 
 class FileProcessCreateAPIView(CreateAPIView):
     queryset = FileProcess.objects.all()
@@ -103,12 +106,23 @@ class FileProcessStatusReportAPIView(APIView):
 
 
 
+class ServiceAvailabilityView(APIView):
+    def get(self, request):
+        try:
+            service_availability = ServiceAvailability.objects.first()
+            if not service_availability:
+                return Response({'error': 'Service availability not set.'}, status=status.HTTP_404_NOT_FOUND)
+            serializer = ServiceAvailabilitySerializer(service_availability)
+            return Response(serializer.data)
+        except ServiceAvailability.DoesNotExist:
+            return Response({'error': 'Service availability not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-
-
-
+    def put(self, request):
+        service_availability, created = ServiceAvailability.objects.get_or_create(id=1)
+        serializer = ServiceAvailabilitySerializer(service_availability, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import FileProcess
 from account.serializers import UserGetSerializer
+from .models import ServiceAvailability
 
 
 class FileProcessSerializer(serializers.ModelSerializer):
@@ -16,3 +17,10 @@ class FileProcessGetSerializer(serializers.ModelSerializer):
  class Meta:
   model = FileProcess
   fields = '__all__'
+
+
+
+class ServiceAvailabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceAvailability
+        fields = ['is_available']

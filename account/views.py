@@ -45,7 +45,9 @@ class UserCreateViewSet(generics.CreateAPIView):
                 first_name=serializer.validated_data['first_name'],
                 last_name=serializer.validated_data['last_name'],
                 phone_number=serializer.validated_data['phone_number'],
-                profile_pic=image_url
+                profile_pic=image_url,
+                role=serializer.validated_data['role'],
+                window_number=serializer.validated_data['window_number'] 
             )
             print(user)
             user.set_password(serializer.validated_data['password'])

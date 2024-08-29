@@ -21,6 +21,12 @@ class FileProcess(models.Model):
  def __str__(self):
   return f"{self.file_name} {self.file_content} {self.file_serial_number}"
  
+class ServiceAvailability(models.Model):
+    is_available = models.BooleanField(default=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Service is {'available' if self.is_available else 'unavailable'}"
 
 
 
