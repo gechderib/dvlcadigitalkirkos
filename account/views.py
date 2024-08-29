@@ -140,7 +140,7 @@ class StaffUserListView(generics.ListAPIView):
     serializer_class = UserGetSerializer
 
     def get_queryset(self):
-        return CustomUser.objects.filter(role='user1' or 'user2' or 'user3' or 'user4')
+        return CustomUser.objects.filter(role__in=['user1', 'user2', 'user3', 'user4'])
 
 
 @api_view(['POST'])
