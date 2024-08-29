@@ -19,7 +19,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 class UserGetSerializer(serializers.ModelSerializer):
  
- profile_pic = serializers.ImageField(max_length=None, allow_empty_file=True, use_url=True, required=False)
+#  profile_pic = serializers.ImageField(max_length=None, allow_empty_file=True, use_url=True, required=False)
 #  comments = CommentSerializer(many=True)
 
  class Meta:
