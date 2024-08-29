@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
 
 class NewsSerializer(serializers.ModelSerializer):
