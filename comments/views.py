@@ -8,8 +8,12 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from django.utils import timezone
-
+from account.models import CustomUser
+from account.serializers import UserGetSerializer
 from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
+from django.utils.timezone import now, timedelta
+from django.db.models import Avg
+from rest_framework.views import APIView
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -72,8 +76,45 @@ class GeneralCommentDetailApiViewSet(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
 
+class SatisfactionView(APIView):
+    def get(self, request):
+        today = now()
+        start_of_week = today - timedelta(days=today.weekday())
 
-    
+        # Filter comments from the start of the week to now
+        weekly_comments = Comment.objects.filter(created_at__gte=start_of_week)
+
+        # Group by user and calculate the average level of satisfaction for the week
+        weekly_user_satisfaction = weekly_comments.values('to_user').annotate(avg_satisfaction=Avg('level_of_satisfaction')).order_by('-avg_satisfaction')
+
+        # Get the overall average level of satisfaction for each user
+        overall_user_satisfaction = Comment.objects.values('to_user').annotate(avg_satisfaction=Avg('level_of_satisfaction')).order_by('-avg_satisfaction')
+
+        # Serialize the data with user details
+        weekly_data = []
+        for entry in weekly_user_satisfaction:
+            user = CustomUser.objects.get(id=entry['to_user'])
+            entry_data = {
+                'user': UserGetSerializer(user).data,
+                'average_satisfaction': entry['avg_satisfaction']
+            }
+            weekly_data.append(entry_data)
+
+        overall_data = []
+        for entry in overall_user_satisfaction:
+            user = CustomUser.objects.get(id=entry['to_user'])
+            entry_data = {
+                'user': UserGetSerializer(user).data,
+                'average_satisfaction': entry['avg_satisfaction']
+            }
+            overall_data.append(entry_data)
+
+        response_data = {
+            'weekly_user_satisfaction': weekly_data,
+            'overall_user_satisfaction': overall_data
+        }
+
+        return Response(response_data)
 
 
 

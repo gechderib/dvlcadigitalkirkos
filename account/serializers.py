@@ -27,7 +27,11 @@ class UserGetSerializer(serializers.ModelSerializer):
   fields = ['id','first_name', 'last_name','phone_number','profile_pic', 'role','window_number']
 
 
+
 class UserLoginSerializer(serializers.Serializer):
 
  password = serializers.CharField(write_only=True)
  phone_number = serializers.CharField()
+
+
+
