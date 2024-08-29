@@ -40,6 +40,7 @@ class CustomUser(AbstractUser):
     password = models.CharField(verbose_name="Password", max_length=255, blank=False, null=False)
     role = models.CharField(verbose_name="Role", max_length=20, choices=ROLE_CHOICES, default='staff')
     # profile_pic = CloudinaryField('image', blank=True, null=True)
+    window_number = models.IntegerField(verbose_name="window_number", default=112)
     profile_pic = models.JSONField(default=list)
 
 
