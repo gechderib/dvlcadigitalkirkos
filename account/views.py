@@ -38,7 +38,9 @@ class UserCreateViewSet(generics.CreateAPIView):
             if images:
                 result = upload(images[0], folder=item_folder)
                 image_url = result['secure_url']
+                print("image_url: " + image_url)
             else:
+                print("No image")
                 image_url = None 
             print(image_url)
             user = CustomUser(
@@ -52,6 +54,7 @@ class UserCreateViewSet(generics.CreateAPIView):
             print(user)
             user.set_password(serializer.validated_data['password'])
             user.save()
+            print("000-------------------------------- 000")
 
             return Response({'detail': 'User created successfully'}, status=status.HTTP_201_CREATED)
         else:
