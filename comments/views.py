@@ -14,6 +14,7 @@ from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
 from django.utils.timezone import now, timedelta
 from django.db.models import Avg
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -118,3 +119,26 @@ class SatisfactionView(APIView):
 
 
 
+
+class UserCommentsView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Get the user ID from the query parameters
+        user_id = request.GET.get('id')
+        
+        # Validate that the user ID was provided
+        if not user_id:
+            return Response({"detail": "User ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the user object or return a 404 if the user doesn't exist
+        user = get_object_or_404(CustomUser, id=user_id)
+        
+        # Filter comments where the specified user is the 'to_user'
+        comments = Comment.objects.filter(to_user=user)
+        
+        # Serialize the comments
+        serializer = CommentGetSerializer(comments, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -19,6 +19,8 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment by {self.to_user} on {self.created_at}"
 
+
+
 class GeneralComment(models.Model):
     content = models.TextField()
     level_of_satisfaction = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
@@ -27,3 +29,4 @@ class GeneralComment(models.Model):
 
     def __str__(self):
         return f"{self.content}"
+
