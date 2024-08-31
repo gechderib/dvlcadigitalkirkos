@@ -126,7 +126,9 @@ class UserCommentsView(APIView):
 
     def get(self, request):
         # Get the user ID from the query parameters
-        user_id = request.GET.get('id')
+        print(request.user.id)
+        print("the above value")
+        user_id = request.user.id
         
         # Validate that the user ID was provided
         if not user_id:
