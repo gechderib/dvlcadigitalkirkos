@@ -127,13 +127,21 @@ class ServiceAvailabilityView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FileProcessDetailView(RetrieveAPIView):
+class FileProcessDetailView(APIView):
     queryset = FileProcess.objects.all()
     serializer_class = FileProcessGetSerializer
     lookup_field = 'file_serial_number'
 
-    def get_object(self):
+    def get(self, request, *args, **kwargs):
         try:
-            return super().get_object()
+            file_process = self.queryset.get(**{self.lookup_field: self.kwargs[self.lookup_field]})
+            serializer = self.serializer_class(file_process)
+            return Response({
+                "exists": True,
+                "file": serializer.data
+            })
         except FileProcess.DoesNotExist:
-            raise NotFound("FileProcess with this serial number does not exist.")
+            return Response({
+                "exists": False,
+                "message": "FileProcess with this serial number does not exist."
+            })
