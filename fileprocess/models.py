@@ -9,13 +9,58 @@ FILE_STATUS = (
   ('scanned',"Scanned"),
   ('recorded',"Recorded"),
 )
+
+SERVICE_TYPE = (
+   ('service1','Service one'),
+   ('service2','Service Two'),
+   ('service3','Service Three'),
+   ('service4','Service Four'),
+   ('service5','Service Five'),
+   ('service6','Service Six'),
+   ('service7','Service Seven'),
+   ('service8','Service Eight'),
+   ('service9','Service Nine'),
+   )
+
+PLATE_CODE = (
+   ('plate1','plate one'),
+   ('plate2','plate two'),
+   ('plate3','plate three'),
+   ('plate4','plate four'),
+)
+
+REGION = (
+   ('aa','Addis Ababa'),
+   ('et','Ethiopia'),
+)
+
+LICENSE_TYPE = (
+   ('level1','Level 1'),
+   ('level2','Level 2'),
+   ('level3','Level 3'),
+   ('level4','Level 4'),
+   ('level5','Level 5'),
+   ('level6','Level 6'),
+   
+)
 # Create your models here.
 class FileProcess(models.Model):
  file_serial_number = models.CharField(max_length=255, null=False, blank=False, unique=True)
- file_name = models.CharField(max_length=255, null=False, blank=False)
- file_content = models.TextField(null=False, blank=False)
+
+ file_name = models.CharField(max_length=255, null=True, blank=True)
+ file_content = models.TextField(null=False, blank=True)
+
  file_status = models.CharField(max_length=10, choices=FILE_STATUS, default="start")
  file_created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="filesm")
+
+ service_type = models.CharField(max_length=255, choices=SERVICE_TYPE, default="service type one")
+ plate_code = models.CharField(max_length=255, choices=PLATE_CODE, default="plate code one")
+ region = models.CharField(max_length=255, choices=REGION, default="aa")
+ owner_name = models.CharField(max_length=255, default="Abebe Alemu Teshale")
+
+ driver_lisence_number = models.CharField(max_length=255, default="435834")
+ license_type= models.CharField(max_length=255, choices=LICENSE_TYPE, default='level 1')
+
  created_at = models.DateTimeField(auto_now_add=True)
  updated_at = models.DateTimeField(auto_now=True)
 

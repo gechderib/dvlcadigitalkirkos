@@ -8,8 +8,7 @@ class FileProcessSerializer(serializers.ModelSerializer):
 
  class Meta:
   model = FileProcess
-  fields = ['file_serial_number', 'file_name','file_content','file_status','created_at','updated_at']
-
+  fields = ['file_serial_number', 'file_name','file_content','file_status','created_at','updated_at','service_type','plate_code','region','owner_name','driver_lisence_number','license_type']
 
 class FileProcessGetSerializer(serializers.ModelSerializer):
 
