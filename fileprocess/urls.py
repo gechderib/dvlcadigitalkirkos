@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import FileProcessCreateAPIView, FileProcessListAPIView, FileProcessUpdateAPIView,FileProcessRetrieveAPIView, FileProcessDestroyAPIView,FileProcessDateRangeReportAPIView, FileProcessStatusReportAPIView, ServiceAvailabilityView
+from .views import FileProcessCreateAPIView, FileProcessListAPIView, FileProcessUpdateAPIView,FileProcessRetrieveAPIView, FileProcessDestroyAPIView,FileProcessDateRangeReportAPIView, FileProcessStatusReportAPIView, ServiceAvailabilityView, FileProcessDetailView
 
 urlpatterns = [
  
@@ -11,5 +11,6 @@ urlpatterns = [
     path('report/date-range/', FileProcessDateRangeReportAPIView.as_view(), name='file-process-date-range-report'),
     path('report/status/', FileProcessStatusReportAPIView.as_view(), name='file-process-status-report'),
     path('service-availability/', ServiceAvailabilityView.as_view(), name='service-availability'),
+    path('fileprocess/<str:file_serial_number>/', FileProcessDetailView.as_view(), name='fileprocess-detail'),
 
 ]

@@ -16,6 +16,7 @@ from commons.permission import IsSuperUser, IsAdmin, IsSelfOrReadOnly
 from .models import ServiceAvailability
 from .serializers import ServiceAvailabilitySerializer
 
+from rest_framework.exceptions import NotFound
 
 class FileProcessCreateAPIView(CreateAPIView):
     queryset = FileProcess.objects.all()
@@ -126,3 +127,13 @@ class ServiceAvailabilityView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class FileProcessDetailView(RetrieveAPIView):
+    queryset = FileProcess.objects.all()
+    serializer_class = FileProcessGetSerializer
+    lookup_field = 'file_serial_number'
+
+    def get_object(self):
+        try:
+            return super().get_object()
+        except FileProcess.DoesNotExist:
+            raise NotFound("FileProcess with this serial number does not exist.")

@@ -91,6 +91,7 @@ class UserLoginApiView(generics.CreateAPIView):
             # Use Django's authenticate method
             user = authenticate(request, phone_number=phone_number, password=password)
             print(user)
+            print("uuuuuuuuuuuuuuuuuuuuuuuu")
 
             if user is not None:
                 login(request, user)
@@ -101,6 +102,7 @@ class UserLoginApiView(generics.CreateAPIView):
                     'created': created
                 }, status=status.HTTP_200_OK)
             else:
+                print("here we are man")
                 return Response({'detail': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             print("--------------------------------")
