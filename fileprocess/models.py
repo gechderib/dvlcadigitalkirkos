@@ -2,10 +2,12 @@ from django.db import models
 from account.models import CustomUser
 
 FILE_STATUS = (
- ('start',"Start"),
- ('checked',"Checked"),
- ('scanned',"Scanned"),
- ('recorded',"Recorded"),
+  ('requested', "Requested"),
+  ('approved', "Approved"),
+  ('start',"Start"),
+  ('checked',"Checked"),
+  ('scanned',"Scanned"),
+  ('recorded',"Recorded"),
 )
 # Create your models here.
 class FileProcess(models.Model):
