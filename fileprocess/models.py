@@ -4,6 +4,7 @@ from account.models import CustomUser
 FILE_STATUS = (
   ('requested', "Requested"),
   ('approved', "Approved"),
+  ('fileout', "FileOut"),
   ('start',"Start"),
   ('checked',"Checked"),
   ('scanned',"Scanned"),
