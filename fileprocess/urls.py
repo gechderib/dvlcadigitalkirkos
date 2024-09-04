@@ -12,6 +12,6 @@ urlpatterns = [
     path('report/status/', FileProcessStatusReportAPIView.as_view(), name='file-process-status-report'),
     path('service-availability/', ServiceAvailabilityView.as_view(), name='service-availability'),
     path('fileprocess/<str:file_serial_number>/', FileProcessDetailView.as_view(), name='fileprocess-detail'),
-    path('fileprocess/filter/', FileProcessFilteredView.as_view(), name='fileprocess-filter'),
+    path('filter/', FileProcessFilteredView.as_view(), name='fileprocess-filter'),
 
 ]
