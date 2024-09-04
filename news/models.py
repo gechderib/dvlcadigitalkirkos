@@ -10,7 +10,7 @@ class News(models.Model):
 
  title = models.CharField(max_length=200)
  content = models.TextField()
- image = models.ImageField(upload_to='images/')
+ image = models.JSONField(default=list)
  author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='news')
  news_type = models.CharField(max_length=10, choices=NEWS_LEVEL)
  created_at = models.DateTimeField(auto_now_add=True)

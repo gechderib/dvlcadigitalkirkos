@@ -6,6 +6,7 @@ from datetime import timedelta
 
 
 class NewsSerializer(serializers.ModelSerializer):
+ image = serializers.ImageField(max_length=None, allow_empty_file=True, required=False)
 
  class Meta:
   model = News
