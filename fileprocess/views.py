@@ -145,3 +145,23 @@ class FileProcessDetailView(APIView):
                 "exists": False,
                 "message": "FileProcess with this serial number does not exist."
             })
+
+
+class FileProcessFilteredView(ListAPIView):
+    serializer_class = FileProcessSerializer
+    authentication_classes = [TokenAuthentication] 
+    permission_classes = [IsAuthenticated] 
+
+    def get_queryset(self):
+        user = self.request.user  # Get the authenticated user
+        queryset = FileProcess.objects.filter(file_created_by=user)  # Filter by the authenticated user
+        file_status = self.request.query_params.get('file_status', None)
+        service_for = self.request.query_params.get('service_for', None)
+
+        if file_status is not None:
+            queryset = queryset.filter(file_status=file_status)
+        
+        if service_for is not None:
+            queryset = queryset.filter(service_for=service_for)
+
+        return queryset
