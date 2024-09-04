@@ -54,14 +54,14 @@ class FileProcess(models.Model):
  file_status = models.CharField(max_length=10, choices=FILE_STATUS, default="start")
  file_created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="filesm")
 
- service_for = models.CharField(max_length=255, choices=SERVICE_FOR, default='driver')
- service_type = models.CharField(max_length=255, choices=SERVICE_TYPE, default="service1")
- plate_code = models.CharField(max_length=255, choices=PLATE_CODE, default="plate1")
- region = models.CharField(max_length=255, choices=REGION, default="aa")
- owner_name = models.CharField(max_length=255, default="Abebe Alemu")
+ service_for = models.CharField(max_length=255, choices=SERVICE_FOR, null=True, blank=True)
+ service_type = models.CharField(max_length=255, choices=SERVICE_TYPE, null=True, blank=True)
+ plate_code = models.CharField(max_length=255, choices=PLATE_CODE, null=True, blank=True)
+ region = models.CharField(max_length=255, choices=REGION, null=True, blank=True)
+ owner_name = models.CharField(max_length=255, null=True, blank=True)
 
- driver_lisence_number = models.CharField(max_length=255, default="435834")
- license_type= models.CharField(max_length=255, choices=LICENSE_TYPE, default='level1')
+ driver_lisence_number = models.CharField(max_length=255, null=True, blank=True)
+ license_type= models.CharField(max_length=255, choices=LICENSE_TYPE, null=True, blank=True)
 
  created_at = models.DateTimeField(auto_now_add=True)
  updated_at = models.DateTimeField(auto_now=True)
