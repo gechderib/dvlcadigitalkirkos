@@ -149,11 +149,12 @@ class FileProcessDetailView(APIView):
 
 class FileProcessFilteredView(ListAPIView):
     serializer_class = FileProcessSerializer
+    authentication_classes = [TokenAuthentication]  # Ensures the user is authenticated
     permission_classes = [IsAuthenticated]  # Ensures the user is authenticated
 
     def get_queryset(self):
-        user = self.request.user  # Get the authenticated user
-        queryset = FileProcess.objects.filter(file_created_by=user)  # Filter by the authenticated user
+        user = self.request.user
+        queryset = FileProcess.objects.filter(file_created_by=user)
         file_status = self.request.query_params.get('file_status', '').strip()
         service_for = self.request.query_params.get('service_for', '').strip()
 
