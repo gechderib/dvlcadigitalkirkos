@@ -22,12 +22,15 @@ class NewsListAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
 
-@method_decorator(csrf_exempt, name="dispatch")
 class NewsCreateAPIView(CreateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Automatically set the author to the currently authenticated user
+        serializer.save(author=self.request.user)
 
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsRetrieveAPIView(RetrieveAPIView):
@@ -42,14 +45,14 @@ class NewsUpdateAPIView(UpdateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
 
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsDestroyAPIView(DestroyAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
 
 
 # office derection view
@@ -59,7 +62,7 @@ class OfficeDirectionCreateAPIView(CreateAPIView):
     queryset = OfficeDirection.objects.all()
     serializer_class = OfficeDirectionSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
 
 
 
@@ -80,7 +83,7 @@ class OfficeDirectionUpdateAPIView(UpdateAPIView):
     queryset = OfficeDirection.objects.all()
     serializer_class = OfficeDirectionSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
 
 

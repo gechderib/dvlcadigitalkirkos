@@ -10,7 +10,7 @@ class NewsSerializer(serializers.ModelSerializer):
  class Meta:
   model = News
   fields = ['id', 'title', 'content', 'image', 'author', 'news_type', 'created_at', 'updated_at']
-
+  read_only_fields = ['author']
 
 class OfficeDirectionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,11 +24,6 @@ class UserObliqueDirectionSerializer(serializers.ModelSerializer):
       fields = '__all__'
 
 
-
-# class TicketAnouncementSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = TicketAnnouncement
-#         fields = '__all__'
         
 class TicketAnouncementSerializer(serializers.ModelSerializer):
     class Meta:
