@@ -60,7 +60,7 @@ class FileProcess(models.Model):
  region = models.CharField(max_length=255, choices=REGION, null=True, blank=True)
  owner_name = models.CharField(max_length=255, null=True, blank=True)
 
- driver_lisence_number = models.CharField(max_length=255, null=True, blank=True)
+ driver_license_number = models.CharField(max_length=255, null=True, blank=True)
  license_type= models.CharField(max_length=255, choices=LICENSE_TYPE, null=True, blank=True)
 
  created_at = models.DateTimeField(auto_now_add=True)
