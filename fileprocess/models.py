@@ -5,6 +5,7 @@ FILE_STATUS = (
   ('requested', "Requested"),
   ('approved', "Approved"),
   ('fileout', "FileOut"),
+  ('uncheck','Unchecked'),
   ('start',"Start"),
   ('checked',"Checked"),
   ('scanned',"Scanned"),
