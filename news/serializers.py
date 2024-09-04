@@ -3,7 +3,7 @@ from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
-
+from account.serializers import UserGetSerializer
 
 class NewsSerializer(serializers.ModelSerializer):
  image = serializers.ImageField(max_length=None, allow_empty_file=True, required=False)
@@ -12,6 +12,13 @@ class NewsSerializer(serializers.ModelSerializer):
   model = News
   fields = ['id', 'title', 'content', 'image', 'author', 'news_type', 'created_at', 'updated_at']
   read_only_fields = ['author']
+
+class NewsGetSerializer(serializers.ModelSerializer):
+   author = UserGetSerializer
+   class Meta:
+      model = News
+      fields = '__all__'
+
 
 class OfficeDirectionSerializer(serializers.ModelSerializer):
     class Meta:

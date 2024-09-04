@@ -1,5 +1,5 @@
 from .models import News, OfficeDirection, UserObligation, TicketAnnouncement
-from .serializers import NewsSerializer, OfficeDirectionSerializer, UserObliqueDirectionSerializer, TicketAnouncementSerializer
+from .serializers import NewsSerializer, OfficeDirectionSerializer, UserObliqueDirectionSerializer, TicketAnouncementSerializer, NewsGetSerializer
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -22,7 +22,7 @@ from rest_framework import status
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsListAPIView(ListAPIView):
     queryset = News.objects.all()
-    serializer_class = NewsSerializer
+    serializer_class = NewsGetSerializer
     permission_classes = [AllowAny]
 
 
@@ -37,7 +37,6 @@ class NewsCreateAPIView(CreateAPIView):
         if serializer.is_valid():
             images = request.FILES.getlist('image')
             item_folder = "item_folder"
-
 
             if images:
                 result = upload(images[0], folder=item_folder)
@@ -86,8 +85,6 @@ class NewsDestroyAPIView(DestroyAPIView):
 
 
 # office derection view
-
-
 class OfficeDirectionCreateAPIView(CreateAPIView):
     queryset = OfficeDirection.objects.all()
     serializer_class = OfficeDirectionSerializer
