@@ -24,9 +24,6 @@ class UserCreateViewSet(generics.CreateAPIView):
     # permission_classes = [IsAuthenticated, IsSuperUser]
 
     def create(self, request, *args, **kwargs):
-        print("--------------------------------")
-        print(request.data)
-        print("--------------------------------")
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             print("99999999999999999999999999999")

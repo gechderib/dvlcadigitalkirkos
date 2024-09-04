@@ -15,6 +15,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 import time
 
+from cloudinary.uploader import upload
+from rest_framework.response import Response
+from rest_framework import status
+
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsListAPIView(ListAPIView):
     queryset = News.objects.all()
@@ -28,9 +32,35 @@ class NewsCreateAPIView(CreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        # Automatically set the author to the currently authenticated user
-        serializer.save(author=self.request.user)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            images = request.FILES.getlist('image')
+            item_folder = "item_folder"
+
+
+            if images:
+                result = upload(images[0], folder=item_folder)
+                image_url = result['secure_url']
+                print("image_url: " + image_url)
+            else:
+                print("No image")
+                image_url = None 
+            print(image_url)
+            news = News(
+                title=serializer.validated_data['title'],
+                content=serializer.validated_data['content'],
+                news_type=serializer.validated_data['news_type'],
+                image=image_url,
+                author=self.request.user,
+            )
+            news.save()
+
+            return Response({'detail': 'News created successfully'}, status=status.HTTP_201_CREATED)
+        else:
+            print ('News creation failed')
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class NewsRetrieveAPIView(RetrieveAPIView):
