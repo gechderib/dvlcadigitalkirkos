@@ -153,11 +153,15 @@ class FileProcessFilteredView(ListAPIView):
     permission_classes = [IsAuthenticated]  # Ensures the user is authenticated
 
     def get_queryset(self):
+        print(self.request.user)
         user = self.request.user
         queryset = FileProcess.objects.filter(file_created_by=user)
         file_status = self.request.query_params.get('file_status', '').strip()
         service_for = self.request.query_params.get('service_for', '').strip()
-
+        print("here we are")
+        print(user)
+        print(file_status)
+        print(service_for)
         # Apply filters only if they are not empty
         if file_status:
             queryset = queryset.filter(file_status=file_status)

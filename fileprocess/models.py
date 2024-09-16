@@ -10,6 +10,9 @@ FILE_STATUS = (
   ('checked',"Checked"),
   ('scanned',"Scanned"),
   ('recorded',"Recorded"),
+  ('disapproved','Disapproved'),
+  ('nofile', 'NoFile'),
+
 )
 SERVICE_TYPE = (
    ('service1','Service one'),
@@ -53,7 +56,7 @@ class FileProcess(models.Model):
  file_name = models.CharField(max_length=255, null=True, blank=True)
  file_content = models.TextField(null=False, blank=True)
 
- file_status = models.CharField(max_length=10, choices=FILE_STATUS, default="start")
+ file_status = models.CharField(max_length=15, choices=FILE_STATUS, default="start")
  file_created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="filesm")
 
  service_for = models.CharField(max_length=255, choices=SERVICE_FOR, null=True, blank=True)
